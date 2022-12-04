@@ -23,7 +23,7 @@ $ node migrate-checkupdate-package-info.js
 
 ## [tools-net-tcping](tools-net-tcping.js)
 
-Check TCP connections. See also [tcping](https://www.elifulkerson.com/projects/tcping.php).
+Check TCP connections. See also [tcping](https://www.elifulkerson.com/projects/tcping.php). Example:
 
 ```shell
 $ node tools-net-tcping.js www.example.org
