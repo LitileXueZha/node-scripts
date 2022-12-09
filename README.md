@@ -45,3 +45,21 @@ Ping statistics for [www.example.org:443]:
 |`-n`|Count of connections|**`4`**|-|
 |Hostname|-|-|Required|
 |Port|-|**`80`**|-|
+
+## [nodejs-watch-runner](nodejs-watch-runner.js)
+
+Auto re-execute the script when it or its' requires changed, only work with CommonJS module. Example:
+
+```shell
+$ node nodejs-watch-runner.js tools-net-tcping.js -n 2 example.org
+[] 2022-12-09T09:07:05.082Z
+PING example.org:80 (110.242.68.66) TCP connections:
+Connected 110.242.68.66:80/tcp: time=43ms
+Connected 110.242.68.66:80/tcp: time=38ms
+
+Ping statistics for [example.org:80]:
+   2 connections, 0% failures, avg=41ms, max=43ms, min=38ms.
+[] 2022-12-09T09:07:17.382Z
+restart
+PING ...
+```
