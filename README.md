@@ -48,7 +48,7 @@ Ping statistics for [www.example.org:443]:
 
 ## [nodejs-watch-runner](nodejs-watch-runner.js)
 
-Auto re-execute the script when it or its' requires changed, only work with CommonJS module. Example:
+Auto re-execute the script when itself or its' required modules changed, only work with CommonJS module. Example:
 
 ```shell
 $ node nodejs-watch-runner.js tools-net-tcping.js -n 2 example.org
@@ -63,3 +63,9 @@ Ping statistics for [example.org:80]:
 restart
 PING ...
 ```
+
+## [nodejs-tty-colors](nodejs-tty-colors.js)
+
+Print color styles, use built-in [`util.inspect.colors`](https://nodejs.org/api/util.html#modifiers). See also at <https://stackoverflow.com/a/28938235>.
+
+![nodejs tty colors](misc/nodejs-tty-colors.jpg)
