@@ -28,11 +28,11 @@ Check TCP connections. See also [tcping](https://www.elifulkerson.com/projects/t
 ```shell
 $ node tools-net-tcping.js www.example.org
 $ node tools-net-tcping.js -n 4 example.org 443
-PING www.example.org:443 (93.184.216.34) TCP connections:
-Connected 93.184.216.34:443/tcp: time=150ms
+PING www.example.org:443 (0.0.0.0) TCP connections:
+Connected 0.0.0.0:443/tcp: time=150ms
 Timeout.
 Network error.
-Connected 93.184.216.34:443/tcp: time=167ms
+Connected 0.0.0.0:443/tcp: time=167ms
 
 Ping statistics for [www.example.org:443]:
    4 connections, 15% failures, avg=157ms, max=167ms, min=150ms.
