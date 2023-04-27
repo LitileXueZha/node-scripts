@@ -14,12 +14,14 @@ async function main() {
     await lookup(REGISTRY);
     checkUpdate(pkg.dependencies);
     checkUpdate(pkg.devDependencies);
+    for (let i = 0; i < CPUs; i++) makeFetch();
+    ev.on('fetch-all-done', () => process.exit(0));
 }
 
 const queue = [];
 let fetching = 0;
 const ev = new events();
-const CPUs = os.cpus().length;
+const CPUs = Math.max(os.cpus().length, 8);
 
 function checkUpdate(deps) {
     if (!deps) {
@@ -28,26 +30,25 @@ function checkUpdate(deps) {
     for (const name in deps) {
         queue.push({ name, version: deps[name] });
     }
-    makeFetch();
 }
 
 function makeFetch() {
     if (fetching >= CPUs) {
         return;
     }
-    fetching ++;
     const pkg = queue.shift();
-    if (!pkg) {
-        ev.emit('fetch-all-done');
-        return;
-    }
+    if (!pkg) return;
+    fetching ++;
     const done = () => {
         fetching --;
         makeFetch();
+        if (fetching === 0) {
+            ev.emit('fetch-all-done');
+        }
     };
     const ac = new AbortController();
     const timer = setTimeout(() => ac.abort(), TIMEOUT);
-    const url = `https://${REGISTRY}/${pkg.name}`;
+    const url = `https://${REGISTRY}/${pkg.name}/latest`;
     const req = https.request(url, { signal: ac.signal, lookup });
     req.on('response', (res) => {
         clearTimeout(timer);
@@ -55,16 +56,7 @@ function makeFetch() {
         res.on('data', (chunk) => buff.push(chunk));
         res.on('end', () => {
             const rawData = Buffer.concat(buff).toString();
-            const { versions } = JSON.parse(rawData);
-            const versionIDs = Object.keys(versions);
-            let latest = '';
-            for (let i = versionIDs.length - 1; i >= 0; i--) {
-                if (versionIDs[i].indexOf('-') < 0) {
-                    latest = versionIDs[i];
-                    break;
-                }
-            }
-            latest = versions[latest];
+            const latest = JSON.parse(rawData);
             outputStats({ pkg, latest });
             done();
         });
